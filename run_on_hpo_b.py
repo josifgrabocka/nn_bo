@@ -28,6 +28,5 @@ benchmark_plotter = BenchmarkPlotter(experiments=experiments,
 
 benchmark_plotter.generate_results(method,
                                    n_trials,
-                                   results_file=results_path+os.sep+surrogate+".json",
-                                   search_spaces=["5889"])
+                                   results_file=results_path+os.sep+surrogate+".json")
 benchmark_plotter.plot()

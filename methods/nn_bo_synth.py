@@ -17,8 +17,8 @@ class NeuralNetworkBOSynth():
         # the hyper-hyperparameter configurations of the method
         if config is None:
             self.config = {'is_rank_version': True, 'eta': 0.01, 'optim_iters': 300, 'train_batch_size': 30,
-                           'acquisition_batch_size': 1000, 'log_iters': 300, 'hidden_layers_units': [16, 16, 16, 16],
-                           'use_batch_norm': False, 'use_dropout': False, 'dropout_rate': 0.0, 'beta': 7.0}
+          'acquisition_batch_size': 1000, 'log_iters': 300, 'hidden_layers_units': [16, 16, 16, 16],
+          'use_batch_norm': False, 'use_dropout': True, 'dropout_rate': 0.05, 'beta': 7.0}
         else:
             self.config = config
 

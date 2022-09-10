@@ -32,9 +32,9 @@ class NeuralNetworkBOSynth():
 
         # the loss
         if self.is_rank_version:
-            self.loss_fn = tf.keras.losses.MeanAbsoluteError()
+            self.loss_fn = tf.keras.losses.MeanSquaredError()
         else:
-            self.loss_fn = tf.keras.losses.MeanAbsoluteError()
+            self.loss_fn = tf.keras.losses.MeanSquaredError()
 
         # the acquisition function
         if self.is_rank_version:

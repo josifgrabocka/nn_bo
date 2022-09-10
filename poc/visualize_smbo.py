@@ -101,7 +101,7 @@ class visualize_smbo:
         self.axs[row_idx, col_idx].scatter(self.X[self.current_evaluations_idxs[-1]], self.y[self.current_evaluations_idxs[-1]], c="r", label="Next")
         # plot the posterior mean
         self.axs[row_idx, col_idx].plot(self.X.ravel(), y_mean, c="g", label=r"$f(\lambda,\lambda^*)$", linewidth=1.0)
-        self.axs[row_idx, col_idx].fill_between(self.X.ravel(), y_mean - y_std, y_mean + y_std, color='g', alpha=0.2)
+        self.axs[row_idx, col_idx].fill_between(self.X.ravel(), y_mean - y_std, y_mean + y_std, color='g', alpha=0.4)
 
 
         if row_idx == 0 and col_idx == self.plot_num_columns - 1:

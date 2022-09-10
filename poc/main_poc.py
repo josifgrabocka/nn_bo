@@ -17,8 +17,8 @@ initial_design_idxs = [250, 550, 850]
 
 # create an smbo method
 config = {'is_rank_version': True, 'eta': 0.01, 'optim_iters': 300, 'train_batch_size': 30,
-          'acquisition_batch_size': 1000, 'log_iters': 300, 'hidden_layers_units': [64, 64],
-          'use_batch_norm': False, 'use_dropout': False, 'dropout_rate': 0.1, 'beta': 10.0}
+          'acquisition_batch_size': 1000, 'log_iters': 300, 'hidden_layers_units': [32, 32, 32],
+          'use_batch_norm': False, 'use_dropout': False, 'dropout_rate': 0.1, 'beta': 5.0}
 
 nn_bo = NeuralNetworkBOSynth(config=config)
 

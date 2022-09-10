@@ -71,7 +71,7 @@ class visualize_smbo:
 
     def visualize_performance(self, trial):
 
-        fontsize = 10
+        fontsize = 11
 
         x_batch = self.smbo_method.inference_batch(batch_feasible_configs=self.X,
                                                    X_obs=self.X[self.current_evaluations_idxs],

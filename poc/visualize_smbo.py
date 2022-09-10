@@ -21,11 +21,19 @@ class visualize_smbo:
         data_size = len(self.X)
 
         # create plots
-        self.plot_num_rows = 2
+        self.plot_num_rows = 1
         self.plot_num_columns = 4
-        self.fig, self.axs = plt.subplots(self.plot_num_rows, self.plot_num_columns)
+
+        plt.rcParams.update({
+            "text.usetex": True,
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Helvetica"]})
+
+        self.fig, self.axs = plt.subplots(self.plot_num_rows+1, self.plot_num_columns)
         plt.show(block=False)
 
+        for c in range(self.plot_num_columns):
+            self.axs[self.plot_num_rows, c].axis('off')
 
         self.pending_evaluation_idxs = list(range(data_size))
         self.current_evaluations_idxs = []
@@ -68,11 +76,19 @@ class visualize_smbo:
         row_idx = trial//self.plot_num_columns
         col_idx = trial % self.plot_num_columns
 
-        self.axs[row_idx, col_idx].set_ylabel("y")
-        self.axs[row_idx, col_idx].set_xlabel("x")
+        self.axs[row_idx, col_idx].set_xticks((0.0, 1.0))
+
+
+        if row_idx == self.plot_num_rows - 1:
+            self.axs[row_idx, col_idx].set_xlabel(r"$\lambda$")
+        if col_idx == 0:
+            self.axs[row_idx, col_idx].set_ylabel(r"$y(\lambda)$")
+            self.axs[row_idx, col_idx].set_yticks((0.0, 1.0))
+        else:
+            self.axs[row_idx, col_idx].set_yticks(())
 
         # plot the ground truth function
-        self.axs[row_idx, col_idx].plot(self.X, self.y, c="k", label="Ground Truth", linewidth=0.5)
+        self.axs[row_idx, col_idx].plot(self.X, self.y, c="k", label="Ground Truth", linewidth=1.0)
         # plot the evaluated points so far
         self.axs[row_idx, col_idx].scatter(self.X[self.current_evaluations_idxs[:-1]], self.y[self.current_evaluations_idxs[:-1]], c="b", label="Evaluated")
         self.axs[row_idx, col_idx].scatter(self.X[self.current_evaluations_idxs[-1]], self.y[self.current_evaluations_idxs[-1]], c="r", label="Recommended")
@@ -80,7 +96,7 @@ class visualize_smbo:
         self.axs[row_idx, col_idx].plot(self.X.ravel(), y_mean, c="g", label="Surrogate Mean", linewidth=1.0)
         self.axs[row_idx, col_idx].fill_between(self.X.ravel(), y_mean - y_std, y_mean + y_std, color='g', alpha=0.2, label="Surrogate Std")
 
-        self.axs[row_idx, col_idx].legend()
+        #self.axs[row_idx, col_idx].legend()
         #self.axs[row_idx, col_idx].show(block=False)
         #plt.tight_layout()
         plt.draw()

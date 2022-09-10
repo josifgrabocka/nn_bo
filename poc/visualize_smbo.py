@@ -71,7 +71,7 @@ class visualize_smbo:
 
     def visualize_performance(self, trial):
 
-        fontsize = 9
+        fontsize = 10
 
         x_batch = self.smbo_method.inference_batch(batch_feasible_configs=self.X,
                                                    X_obs=self.X[self.current_evaluations_idxs],
@@ -105,7 +105,7 @@ class visualize_smbo:
 
 
         if row_idx == 0 and col_idx == self.plot_num_columns - 1:
-            self.axs[row_idx, col_idx].legend(loc=1, bbox_to_anchor=(2.5, 1.0), fontsize=fontsize)
+            self.axs[row_idx, col_idx].legend(loc=1, bbox_to_anchor=(2.0, 1.0), fontsize=fontsize)
 
         plt.draw()
         #plt.show()

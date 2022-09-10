@@ -16,10 +16,9 @@ class NeuralNetworkBOSynth():
 
         # the hyper-hyperparameter configurations of the method
         if config is None:
-            self.config = {'is_rank_version': True, 'eta': 0.03, 'optim_iters': 300, 'train_batch_size': 300,
+            self.config = {'is_rank_version': False, 'eta': 0.01, 'optim_iters': 300, 'train_batch_size': 30,
                            'acquisition_batch_size': 1000, 'log_iters': 300, 'hidden_layers_units': [64, 64],
-                           'use_batch_norm': False, 'use_dropout': True, 'dropout_rate': 0.2,
-                           'alpha': 0.5, 'beta': 4.0, 'gamma': 5.0}
+                           'use_batch_norm': False, 'use_dropout': False, 'dropout_rate': 0.1, 'beta': 5.0}
         else:
             self.config = config
 
@@ -46,9 +45,7 @@ class NeuralNetworkBOSynth():
         # store the number of hyperparameters in the current task
         self.num_hyperparameters = -1
 
-        self.alpha = self.config['alpha']
         self.beta = self.config['beta']
-        self.gamma = self.config['gamma']
 
     # some acquisition choices
     # probability of improvement

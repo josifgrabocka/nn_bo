@@ -195,7 +195,7 @@ class NeuralNetworkBOSynth():
         # compute pairwisse distances
         D = cdist(X_first, X_obs_tensor, lambda u, v: np.abs(u-v).mean())
         # compute weighted RBF
-        D = self.alpha*(np.tanh(self.gamma * D))
+        #D = self.alpha*(np.tanh(self.gamma * D))
         # compute synthetic uncertainty
         y_std = np.min(D, axis=1).astype(float)
 

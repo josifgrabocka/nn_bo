@@ -71,7 +71,7 @@ class visualize_smbo:
 
     def visualize_performance(self, trial):
 
-        fontsize = 10
+        fontsize = 9
 
         x_batch = self.smbo_method.inference_batch(batch_feasible_configs=self.X,
                                                    X_obs=self.X[self.current_evaluations_idxs],
@@ -98,7 +98,7 @@ class visualize_smbo:
         self.axs[row_idx, col_idx].plot(self.X, self.y, c="k", label="Ground Truth", linewidth=1.0)
         # plot the evaluated points so far
         self.axs[row_idx, col_idx].scatter(self.X[self.current_evaluations_idxs[:-1]], self.y[self.current_evaluations_idxs[:-1]], c="b", label="Evaluated")
-        self.axs[row_idx, col_idx].scatter(self.X[self.current_evaluations_idxs[-1]], self.y[self.current_evaluations_idxs[-1]], c="r", label="Recommended")
+        self.axs[row_idx, col_idx].scatter(self.X[self.current_evaluations_idxs[-1]], self.y[self.current_evaluations_idxs[-1]], c="r", label="Next")
         # plot the posterior mean
         self.axs[row_idx, col_idx].plot(self.X.ravel(), y_mean, c="g", label=r"$f(\lambda,\lambda^*)$", linewidth=1.0)
         self.axs[row_idx, col_idx].fill_between(self.X.ravel(), y_mean - y_std, y_mean + y_std, color='g', alpha=0.2)

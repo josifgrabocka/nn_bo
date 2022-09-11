@@ -109,6 +109,12 @@ class BenchmarkPlotter:
 
                     for experiment in self.experiments:
                         try:
+
+                            max_accuracy = np.max(self.results[:][search_space][task][:])
+                            min_accuracy = np.max(self.results[:][search_space][task][:])
+
+                            print(search_space, task, max_accuracy, min_accuracy)
+
                             regret = [1-x for x in self.results[experiment][search_space][task][seed]][:self.n_trials]
                             
                             task_seed_results.append(regret)
@@ -119,7 +125,6 @@ class BenchmarkPlotter:
                     
                     if complete_results_task_seed:
                             rank_df = pd.DataFrame(1-np.array(task_seed_results).round(8)).rank(axis=0, ascending=False)
-
                             self.rank_per_space[search_space].append(rank_df.to_numpy().tolist())
                             self.regret_per_space[search_space].append(task_seed_results)
             
@@ -166,7 +171,7 @@ class BenchmarkPlotter:
         fig, ax= plt.subplots(1,2, figsize=(20,10))
         self.make_rank_and_regret_plot(self.all_ranks, self.all_regrets, ax[0], ax[1], title = "")
 
-        fig.legend(self.experiments,loc="lower center", bbox_to_anchor=(0.55, -0.15), ncol=5, fontsize=32)
+        fig.legend(self.experiments, loc="lower center", bbox_to_anchor=(0.55, -0.15), ncol=5, fontsize=32)
         plt.tight_layout()
         plt.draw()
         fig.savefig(path+name+".pdf", bbox_inches="tight", dpi=300)

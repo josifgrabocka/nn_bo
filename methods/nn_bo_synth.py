@@ -38,7 +38,7 @@ class NeuralNetworkBOSynth():
 
         # the acquisition function
         if self.is_rank_version:
-            self.acq_fun = self.UCB
+            self.acq_fun = self.EI
         else:
             self.acq_fun = self.EI
 
@@ -242,7 +242,10 @@ class NeuralNetworkBOSynth():
             y_hats_std = y_hats_std if isinstance(y_hats_std, list) else [y_hats_std]
             # check if the configuration is the incumbent
             for idx_batch, x in enumerate(x_batch):
-                acquisition_val = self.acq_fun(y_max, y_hats_mean[idx_batch], y_hats_std[idx_batch])
+                if self.is_rank_version:
+                    acquisition_val = self.acq_fun(max_val=0.0, mean=y_hats_mean[idx_batch], std=y_hats_std[idx_batch])
+                else:
+                    acquisition_val = self.acq_fun(max_val=y_max, mean=y_hats_mean[idx_batch], std=y_hats_std[idx_batch])
 
                 if acquisition_val >= incumbent_acquisition_value:
                     incumbent_idx = i

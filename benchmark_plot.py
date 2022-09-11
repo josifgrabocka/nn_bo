@@ -183,7 +183,7 @@ class BenchmarkPlotter:
         draw(df, path_name= path+name+".png", title=name)
 
 
-    def generate_results (self, method, n_trials, results_file=None, search_spaces=None, seeds=None):
+    def generate_results (self, method, n_trials, results_path=None, search_spaces=None, seeds=None):
 
         hpob_hdlr = HPOBHandler(root_dir=self.data_path, mode="v3-test")
 
@@ -209,8 +209,8 @@ class BenchmarkPlotter:
                                                                                     seed=seed,
                                                                                     n_trials=n_trials)
 
-        with open(results_file, "w") as f:
-            json.dump(results, f)
+            with open(results_path + "_" + str(search_space_id) + ".json", "w") as f:
+                json.dump(results, f)
 
 
 if __name__=="__main__":

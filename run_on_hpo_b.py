@@ -5,6 +5,7 @@ from methods.nn_bo_synth import NeuralNetworkBOSynth
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data_path', help='data path')
+parser.add_argument('--search_space', help='hpo-b search space id')
 args = parser.parse_args()
 
 data_path = args.data_path
@@ -28,5 +29,6 @@ benchmark_plotter = BenchmarkPlotter(experiments=experiments,
 
 benchmark_plotter.generate_results(method,
                                    n_trials,
-                                   results_file=results_path+os.sep+surrogate+".json")
+                                   results_path=results_path + os.sep + surrogate + ".json",
+                                   search_spaces=[args.search_space])
 benchmark_plotter.plot()

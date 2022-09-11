@@ -195,7 +195,7 @@ class NeuralNetworkBOSynth():
         #D = self.alpha*(np.tanh(self.gamma * D))
         # compute synthetic uncertainty
         y_std = np.min(D, axis=1).astype(float)
-
+        y_std = np.clip(y_std, 0.0, 0.15)
 
         return y_mean, y_std
 

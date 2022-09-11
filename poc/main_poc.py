@@ -16,9 +16,9 @@ initial_design_idxs = random.sample(range(num_evals), num_initial_observations)
 #initial_design_idxs = [550]
 
 # create an smbo method
-config = {'is_rank_version': True, 'eta': 0.01, 'optim_iters': 300, 'train_batch_size': 30,
-          'acquisition_batch_size': 1000, 'log_iters': 300, 'hidden_layers_units': [16, 16, 16, 16],
-          'use_batch_norm': False, 'use_dropout': False, 'dropout_rate': 0.0, 'beta': 3.0}
+config = {'is_rank_version': True, 'eta': 0.01, 'optim_iters': 3000, 'train_batch_size': 30,
+          'acquisition_batch_size': 1000, 'log_iters': 1000, 'hidden_layers_units': [16, 16, 16, 16, 16],
+          'use_batch_norm': False, 'use_dropout': True, 'dropout_rate': 0.1, 'beta': 3.0}
 
 nn_bo = NeuralNetworkBOSynth(config=config)
 

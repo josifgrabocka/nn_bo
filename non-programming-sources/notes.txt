@@ -1,0 +1,3 @@
+to merge json result files
+
+jq -s '.[0] * .[1]' files

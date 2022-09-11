@@ -66,7 +66,7 @@ class BenchmarkPlotter:
         
         return self.results
 
-    def plots_on_axis(self, axis, mean, std, ci_factor, title="", y_label="Average Rank", draw_std=False, scale = "linear"):
+    def plots_on_axis(self, axis, mean, std, ci_factor, title="", y_label="Average Rank", draw_std=False, scale= "linear"):
 
 
         for k in range(mean.shape[0]):
@@ -77,7 +77,7 @@ class BenchmarkPlotter:
                 x_std = std[k,:]*ci_factor*0.5
                 ci1 = x-x_std
                 ci2 = x+x_std
-                axis.fill_between(np.arange(x.shape[0]), ci1, ci2, alpha=.1)
+                axis.fill_between(np.arange(x.shape[0]), ci1, ci2, alpha=0.3)
 
         axis.set_yscale(scale)
         axis.set_title(title, fontsize=38)
@@ -169,7 +169,7 @@ class BenchmarkPlotter:
         fig.legend(self.experiments,loc="lower center", bbox_to_anchor=(0.55, -0.15), ncol=5, fontsize=32)
         plt.tight_layout()
         plt.draw()
-        fig.savefig(path+name+".png", bbox_inches="tight")
+        fig.savefig(path+name+".pdf", bbox_inches="tight", dpi=300)
 
 
     def draw_cd_diagram(self,  bo_iter=50, name="Rank", path=None):

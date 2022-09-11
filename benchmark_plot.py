@@ -30,7 +30,10 @@ class BenchmarkPlotter:
         self.load_results()
 
         with open(data_path+"meta-test-dataset.json", "r") as f:
-            self.hpo_data = json.load(f) 
+            self.hpo_data = json.load(f)
+
+        self.hpob_hdlr = HPOBHandler(root_dir=self.data_path, mode="v3-test")
+
 
         self.search_spaces = list(self.hpo_data.keys())
 
@@ -46,14 +49,14 @@ class BenchmarkPlotter:
         regret = np.array(regret_list)
         sample_size, n_experiments, n_bo_iters = rank.shape
 
-        rank_mean = np.nanmean(rank,axis=0)
-        regret_mean = np.nanmean(regret,axis=0)
-        rank_std = np.nanstd(rank,axis=0)
-        regret_std = np.nanstd(regret,axis=0)
+        rank_mean = np.nanmean(rank, axis=0)
+        regret_mean = np.nanmean(regret, axis=0)
+        rank_std = np.nanstd(rank, axis=0)
+        regret_std = np.nanstd(regret, axis=0)
         ci_factor = 1.96/np.sqrt(sample_size)
 
-        self.plots_on_axis(axis_rank, rank_mean, rank_std, ci_factor, title, "Average Rank", self.draw_std)
-        self.plots_on_axis(axis_regret, regret_mean, regret_std, ci_factor, title, "Average Regret",  self.draw_std, scale="log")
+        self.plots_on_axis(axis_rank, rank_mean, rank_std, ci_factor, title, "Mean Rank", self.draw_std)
+        self.plots_on_axis(axis_regret, regret_mean, regret_std, ci_factor, title, "Mean Normalized Regret",  self.draw_std)
 
     def load_results(self):
 
@@ -70,11 +73,11 @@ class BenchmarkPlotter:
 
 
         for k in range(mean.shape[0]):
-            x = mean[k,:]
+            x = mean[k, :]
             axis.plot(x, linewidth=5)
 
             if draw_std:
-                x_std = std[k,:]*ci_factor*0.5
+                x_std = std[k, :]*ci_factor*0.5
                 ci1 = x-x_std
                 ci2 = x+x_std
                 axis.fill_between(np.arange(x.shape[0]), ci1, ci2, alpha=0.3)
@@ -110,12 +113,9 @@ class BenchmarkPlotter:
                     for experiment in self.experiments:
                         try:
 
-                            max_accuracy = np.max(self.results[:][search_space][task][:])
-                            min_accuracy = np.max(self.results[:][search_space][task][:])
-
-                            print(search_space, task, max_accuracy, min_accuracy)
-
-                            regret = [1-x for x in self.results[experiment][search_space][task][seed]][:self.n_trials]
+                            max_accuracy = np.max(np.array(self.hpo_data[search_space][task]['y']))
+                            min_accuracy = np.min(np.array(self.hpo_data[search_space][task]['y']))
+                            regret = [(max_accuracy-x)/(max_accuracy-min_accuracy) for x in self.results[experiment][search_space][task][seed]][:self.n_trials]
                             
                             task_seed_results.append(regret)
                         except Exception as e:
@@ -138,19 +138,18 @@ class BenchmarkPlotter:
         name = name if name is not None else self.name
         path = path if path is not None else self.path
 
-        fig, axis_rank = plt.subplots(4,4, figsize=(40,32))
-        fig2, axis_regret = plt.subplots(4,4, figsize=(40,32))
+        fig, axis_rank = plt.subplots(4, 4, figsize=(40, 32))
+        fig2, axis_regret = plt.subplots(4, 4, figsize=(40, 32))
 
         for i, search_space in enumerate(self.search_spaces):
-            index0 = i//4
-            index1 = i%4
+            index0 = i // 4
+            index1 = i % 4
 
             if len(self.rank_per_space[search_space]) > 0:
                 self.make_rank_and_regret_plot(self.rank_per_space[search_space], self.regret_per_space[search_space], axis_rank[index0, index1], axis_regret[index0, index1], title = "Search space No. "+search_space,)
 
-
-        fig.legend(self.experiments,loc="lower center", bbox_to_anchor=(0.55, -0.05), ncol=5, fontsize=32)
-        fig2.legend(self.experiments,loc="lower center", bbox_to_anchor=(0.55, -0.05), ncol=5, fontsize=32)
+        fig.legend(self.experiments, loc="lower center", bbox_to_anchor=(0.55, -0.05), ncol=5, fontsize=32)
+        fig2.legend(self.experiments, loc="lower center", bbox_to_anchor=(0.55, -0.05), ncol=5, fontsize=32)
 
         fig.subplots_adjust(wspace=0.4, hspace=0.4)    
         fig2.subplots_adjust(wspace=0.4, hspace=0.4)
@@ -158,18 +157,16 @@ class BenchmarkPlotter:
         plt.tight_layout()            
         plt.draw()
 
-        fig.savefig(path+name+"_rank.png", bbox_inches="tight")
-        fig2.savefig(path+name+"_regret.png", bbox_inches="tight")
-
+        fig.savefig(path+name+"_rank.pdf", bbox_inches="tight", dpi=300)
+        fig2.savefig(path+name+"_regret.pdf", bbox_inches="tight", dpi=300)
 
     def generate_aggregated_plots(self, name = None, path = None):
 
         name = name if name is not None else self.name
         path = path if path is not None else self.path
 
-
-        fig, ax= plt.subplots(1,2, figsize=(20,10))
-        self.make_rank_and_regret_plot(self.all_ranks, self.all_regrets, ax[0], ax[1], title = "")
+        fig, ax= plt.subplots(1, 2, figsize=(20, 10))
+        self.make_rank_and_regret_plot(self.all_ranks, self.all_regrets, ax[0], ax[1], title="")
 
         fig.legend(self.experiments, loc="lower center", bbox_to_anchor=(0.55, -0.15), ncol=5, fontsize=32)
         plt.tight_layout()
@@ -185,7 +182,7 @@ class BenchmarkPlotter:
         df = df.stack().reset_index()
         df.columns = ["dataset_name", "classifier_name", "accuracy"]
         df.accuracy = -df.accuracy
-        draw(df, path_name= path+name+".png", title=name)
+        draw(df, path_name= path+name+".pdf", title=name, dpi=300)
 
 
     def generate_results (self, method, n_trials, results_path=None, search_spaces=None, seeds=None):

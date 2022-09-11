@@ -18,7 +18,7 @@ class NeuralNetworkBOSynth():
         if config is None:
             self.config = {'is_rank_version': True, 'eta': 0.01, 'optim_iters': 2000, 'train_batch_size': 30,
           'acquisition_batch_size': 1000, 'log_iters': 1000, 'hidden_layers_units': [16, 16, 16, 16, 16],
-          'use_batch_norm': False, 'use_dropout': True, 'dropout_rate': 0.1, 'beta': 3.0}
+          'use_batch_norm': False, 'use_dropout': True, 'dropout_rate': 0.1, 'beta': 5.0}
         else:
             self.config = config
 
@@ -46,6 +46,8 @@ class NeuralNetworkBOSynth():
         self.num_hyperparameters = -1
 
         self.beta = self.config['beta']
+
+        self.max_std = 0.25
 
     # some acquisition choices
     # probability of improvement
@@ -195,7 +197,7 @@ class NeuralNetworkBOSynth():
         #D = self.alpha*(np.tanh(self.gamma * D))
         # compute synthetic uncertainty
         y_std = np.min(D, axis=1).astype(float)
-        y_std = np.clip(y_std, 0.0, 0.25)
+        y_std = np.clip(y_std, 0.0, self.max_std)
 
         return y_mean, y_std
 

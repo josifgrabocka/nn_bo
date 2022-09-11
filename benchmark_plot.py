@@ -113,9 +113,7 @@ class BenchmarkPlotter:
                     for experiment in self.experiments:
                         try:
 
-                            max_accuracy = np.max(np.array(self.hpo_data[search_space][task]['y']))
-                            min_accuracy = np.min(np.array(self.hpo_data[search_space][task]['y']))
-                            regret = [(max_accuracy-x)/(max_accuracy-min_accuracy) for x in self.results[experiment][search_space][task][seed]][:self.n_trials]
+                            regret = [1-x for x in self.results[experiment][search_space][task][seed]][:self.n_trials]
                             
                             task_seed_results.append(regret)
                         except Exception as e:

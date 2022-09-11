@@ -10,7 +10,7 @@ num_evals = len(X)
 print("Num evals in meta-dataset", num_evals)
 
 # initial design indices
-num_initial_observations = 1
+num_initial_observations = 2
 initial_design_idxs = random.sample(range(num_evals), num_initial_observations)
 
 #initial_design_idxs = [550]

@@ -196,6 +196,7 @@ class NeuralNetworkBOSynth():
         # compute synthetic uncertainty
         y_std = np.min(D, axis=1).astype(float)
 
+
         return y_mean, y_std
 
     def inference_batch(self, batch_feasible_configs, X_obs, y_obs):
@@ -234,6 +235,9 @@ class NeuralNetworkBOSynth():
             y_hats_mean, y_hats_std = self.infer(X=x_batch, X_obs=X_obs)
             # convert numpy versions of the posteriors to lists
             y_hats_mean, y_hats_std = y_hats_mean.tolist(), y_hats_std.tolist()
+            # make sure the mean and std are lists, e.g. in case the batch size was 1
+            y_hats_mean = y_hats_mean if isinstance(y_hats_mean, list) else [y_hats_mean]
+            y_hats_std = y_hats_std if isinstance(y_hats_std, list) else [y_hats_std]
             # check if the configuration is the incumbent
             for idx_batch, x in enumerate(x_batch):
                 acquisition_val = self.acq_fun(y_max, y_hats_mean[idx_batch], y_hats_std[idx_batch])

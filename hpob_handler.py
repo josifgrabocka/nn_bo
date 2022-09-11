@@ -138,7 +138,7 @@ class HPOBHandler:
         n_initial_evaluations = 5
         X = np.array(self.meta_test_data[search_space_id][dataset_id]["X"])
         y = np.array(self.meta_test_data[search_space_id][dataset_id]["y"])
-        #y = self.normalize(y)
+        y = self.normalize(y)
         data_size = len(X)
         
         pending_evaluations = list(range(data_size))

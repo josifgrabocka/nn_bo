@@ -47,7 +47,7 @@ class NeuralNetworkBOSynth():
 
         self.beta = self.config['beta']
 
-        self.max_std = 0.25
+        self.max_std = 0.5
 
     # some acquisition choices
     # probability of improvement

@@ -34,7 +34,6 @@ class BenchmarkPlotter:
 
         self.hpob_hdlr = HPOBHandler(root_dir=self.data_path, mode="v3-test")
 
-
         self.search_spaces = list(self.hpo_data.keys())
 
     def plot(self):
@@ -56,7 +55,7 @@ class BenchmarkPlotter:
         ci_factor = 1.96/np.sqrt(sample_size)
 
         self.plots_on_axis(axis_rank, rank_mean, rank_std, ci_factor, title, "Mean Rank", self.draw_std)
-        self.plots_on_axis(axis_regret, regret_mean, regret_std, ci_factor, title, "Mean Normalized Regret",  self.draw_std)
+        self.plots_on_axis(axis_regret, regret_mean, regret_std, ci_factor, title, "Mean Normalized Regret",  self.draw_std, scale="log")
 
     def load_results(self):
 

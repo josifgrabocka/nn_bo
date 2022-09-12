@@ -1,3 +1,7 @@
 to merge json result files
 
 jq -s add results/nn_bo_* > results/NBO.json
+
+to copy the results
+
+scp grabocka@kislogin1.rz.ki.privat:~/sources/nn_bo/results/NBO.json /mnt/c/Users/josif/PycharmProjects/nn_bo/results/
